@@ -18,8 +18,6 @@ class b64:
             b10 -= int(val * (64 ** place ))
             digit_list.append(place)
             value_list.append(b64_digits[val])
-            #print(f'place : {place}, val : {val} remaining b10 : {b10}')
-        #print(f"digit_list = {digit_list} value_list = {value_list}, remaining = {b10}")
         value = []
         i = 0
         for digit in range(0, total_places):
@@ -29,10 +27,8 @@ class b64:
                 i += 1
             else:
                 value.append(0)
-        #print(f'first conversion {value}, left over base {b10}')
         #converts from a list to a string, then turns it to scientific notation significand|exponent (base is always 64)
         value = ''.join([str(x) for x in value])
-        #print(f'after str conversion {value}')
         exponent = len(value)-len(value.strip('0')) 
         value = value.strip('0')
         value = f"{value}|{str(exponent)}"
@@ -44,31 +40,8 @@ class b64:
         b64 = self.b64_value
         b64, exponent = b64.split('|')
         b64 = f"{b64}{''.join(['0' for x in range(0, int(exponent))])}"
-        #print(f'value after expansion    {b64}')
         split_b64 = [*b64]
         value = sum([(b64_digits.index(x)*(64**(len(split_b64)-(i+1)))) for i, x in enumerate(split_b64)])
         self.b10_value = value
         return(value) 
     
-#'''
-x = 1152921504606846978
-a = b64(b10_value=x).encode()
-b = b64(b64_value=a).decode()
-print(f'error at x, {a} {b}, distance = {x - b}')
-#'''
-
-'''
-start = int(input('start value: '))
-end = int(input('end value: '))
-
-x=0
-errors = []
-for x in tqdm.tqdm(range(start, end)):
-    x += 1
-    a = b64(b10_value=x).encode()
-    b = b64(b64_value=a).decode()
-    if x != b:
-        print()
-        print(f'error at {x}, {a} {b} , distance = {x - b}')
-        errors.append(x)
-#'''
